@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login con Google - Auth.Api</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        pre {
+            text-align: left;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 500px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ingreso a Seguridad Distribuida</h2>
+        <p>Usa tu cuenta de Google para ingresar</p>
+
+        
+        <div id="g_id_onload"
+             data-client_id="1016505616927-ho90uc4ma1fd1l9fu35a7u4gsd136v1m.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard"></div>
+
+        <br><hr><br>
+        <h3>Respuesta de Auth.Api:</h3>
+        <pre id="resultado">Esperando inicio de sesión...</pre>
+    </div>
+
+    <script type="text/javascript" src="login.js"></script>
+</body>
+</html>

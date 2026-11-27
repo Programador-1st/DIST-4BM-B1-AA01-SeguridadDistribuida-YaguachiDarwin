@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Restablecer Contraseña</title>
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: #218838;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Nueva Contraseña</h2>
+        <p id="mensaje">Ingresa tu nueva contraseña.</p>
+        <input type="password" id="nuevaPassword" placeholder="Nueva Contraseña">
+        <button type="button" onclick="cambiarPassword()">Restablecer</button>
+    </div>
+
+    <script>
+                const urlParams = new URLSearchParams(window.location.search);
+                const correo = urlParams.get('correo');
+                const token = urlParams.get('token');
+
+                function setMensaje(texto: string, color: string) {
+                    const mensajeEl = document.getElementById('mensaje');
+                    if (!mensajeEl) return;
+                    mensajeEl.innerText = texto;
+                    mensajeEl.style.color = color;
+                }
+
+                function cambiarPassword() {
+                    const inputEl = document.getElementById('nuevaPassword') as HTMLInputElement | null;
+                    if (!inputEl) return;
+
+                    const nuevaPassword = inputEl.value;
+
+                    if (!correo || !token) {
+                        setMensaje("El enlace de restablecimiento no es válido o está incompleto.", "red");
+                        return;
+                    }
+
+                    fetch('/api/auth/restablecer-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo, token, nuevaPassword })
+                    })
+                    .then(async (res) => {
+                        const data = await res.json().catch(() => ({}));
+                        if (!res.ok || data.errores) {
+                            const detalle = Array.isArray(data.errores)
+                                ? data.errores.join(", ")
+                                : (data.mensaje || "No se pudo restablecer la contraseña.");
+                            setMensaje("Error: " + detalle, "red");
+                            return;
+                        }
+                        setMensaje("¡Contraseña cambiada con éxito! Ya puedes ir al Login.", "green");
+                    })
+                    .catch(() => {
+                        setMensaje("Error de conexión.", "red");
+                    });
+                }
+    </script>
+</body>
+</html>
