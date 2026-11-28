@@ -1,0 +1,113 @@
+{
+  "info": {
+    "_postman_id": "ea582bb2-7896-4541-81d7-2e876a07be5a",
+    "name": "AA01 - Seguridad Distribuida",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60105984",
+    "_collection_link": "https://go.postman.co/collection/60105984-ea582bb2-7896-4541-81d7-2e876a07be5a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var jsonData = pm.response.json();\r\npm.environment.set(\"token\", jsonData.token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"correo\": \"darwin65yaguachi@gmail.com\",\r\n  \"password\": \"Distribuidas123!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7179/api/auth/login",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7179",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Usuarios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7220/api/perfiles/me",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7220",
+          "path": [
+            "api",
+            "perfiles",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Notificaciones",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"tipoPlantilla\": \"Bienvenida\",\r\n  \"destinatario\": \"tu_correo_real@gmail.com\",\r\n  \"nombre\": \"Prueba Postman\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7102/api/notificaciones/enviar",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7102",
+          "path": [
+            "api",
+            "notificaciones",
+            "enviar"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
